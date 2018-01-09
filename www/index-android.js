@@ -137,7 +137,7 @@ inAppPurchase.getProducts = function (productIds) {
             description: val.description,
             price: val.price,
             currency: val.currency,
-            priceAsDecimal: val.priceAsDecimal,
+            priceAsDecimal: val.priceAsDecimal
           };
         });
         resolve(arr);
@@ -146,12 +146,13 @@ inAppPurchase.getProducts = function (productIds) {
   });
 };
 
-var executePaymentOfType = function executePaymentOfType(type, productId) {
+var executePaymentOfType = function executePaymentOfType(type, productId, developerPayload) {
+  developerPayload = developerPayload || "";
   return new Promise(function (resolve, reject) {
-    if (!inAppPurchase.utils.validString(productId)) {
+    if (!inAppPurchase.utils.validString(productId, developerPayload)) {
       reject(new Error(inAppPurchase.utils.errors[102]));
     } else {
-      nativeCall(type, [productId]).then(function (res) {
+      nativeCall(type, [productId, developerPayload]).then(function (res) {
         resolve({
           signature: res.signature,
           productId: res.productId,
@@ -165,12 +166,12 @@ var executePaymentOfType = function executePaymentOfType(type, productId) {
   });
 };
 
-inAppPurchase.buy = function (productId) {
-  return executePaymentOfType('buy', productId);
+inAppPurchase.buy = function (productId, developerPayload) {
+  return executePaymentOfType('buy', productId, developerPayload);
 };
 
-inAppPurchase.subscribe = function (productId) {
-  return executePaymentOfType('subscribe', productId);
+inAppPurchase.subscribe = function (productId, developerPayload) {
+  return executePaymentOfType('subscribe', productId, developerPayload);
 };
 
 inAppPurchase.consume = function (type, receipt, signature) {
@@ -196,7 +197,7 @@ inAppPurchase.restorePurchases = function () {
       arr = purchases.map(function (val) {
         return {
           productId: val.productId,
-          state: val.state,
+          state: val.purchaseState,
           transactionId: val.orderId,
           date: val.date,
           type: val.type,
