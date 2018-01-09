@@ -380,7 +380,7 @@ describe('Android purchases', () => {
       try {
         GLOBAL.window.cordova.exec = (success, err, pluginName, name) => {
           if (name === 'restorePurchases') {
-            success([{ productId, state, date, type }]);
+            success([{ productId, purchaseState: state, purchaseTime: date, type }]);
           } else if (name === 'init') {
             success();
           }

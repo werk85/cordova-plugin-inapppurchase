@@ -154,12 +154,14 @@ var executePaymentOfType = function executePaymentOfType(type, productId, develo
     } else {
       nativeCall(type, [productId, developerPayload]).then(function (res) {
         resolve({
-          signature: res.signature,
+          date: res.purchaseTime,
           productId: res.productId,
-          transactionId: res.purchaseToken,
-          type: res.type,
           productType: res.type,
-          receipt: res.receipt
+          receipt: res.receipt,
+          signature: res.signature,
+          state: res.purchaseState,
+          transactionId: res.purchaseToken,
+          type: res.type
         });
       }).catch(reject);
     }
@@ -196,14 +198,14 @@ inAppPurchase.restorePurchases = function () {
     if (purchases) {
       arr = purchases.map(function (val) {
         return {
+          date: val.purchaseTime,
           productId: val.productId,
-          state: val.purchaseState,
-          transactionId: val.orderId,
-          date: val.date,
-          type: val.type,
           productType: val.type,
+          receipt: val.receipt,
           signature: val.signature,
-          receipt: val.receipt
+          state: val.purchaseState,
+          transactionId: val.purchaseToken,
+          type: val.type
         };
       });
     }

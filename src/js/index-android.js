@@ -66,12 +66,14 @@ const executePaymentOfType = (type, productId, developerPayload) => {
     } else {
       nativeCall(type, [productId, developerPayload]).then((res) => {
         resolve({
-          signature: res.signature,
+          date : res.purchaseTime,
           productId: res.productId,
-          transactionId: res.purchaseToken,
-          type : res.type,
           productType : res.type,
           receipt : res.receipt,
+          signature: res.signature,
+          state: res.purchaseState,
+          transactionId: res.purchaseToken,
+          type : res.type,
         });
       }).catch(reject);
     }
@@ -110,14 +112,14 @@ inAppPurchase.restorePurchases = () => {
       if (purchases) {
         arr = purchases.map((val) => {
           return {
+            date : val.purchaseTime,
             productId: val.productId,
-            state : val.purchaseState,
-            transactionId: val.orderId,
-            date : val.date,
-            type : val.type,
             productType : val.type,
-            signature: val.signature,
             receipt : val.receipt,
+            signature: val.signature,
+            state : val.purchaseState,
+            transactionId: val.purchaseToken,
+            type : val.type,
           };
         });
       }
