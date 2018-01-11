@@ -9,6 +9,7 @@
   <description>A lightweight cordova plugin for in app purchases on iOS and Android with a simple promise based API.</description>
   <engines>
     <engine name="cordova" version=">=5.0.0" />
+    <engine name="cordova-android" version=">=7.0.0" />
   </engines>
   <repo>https://github.com/AlexDisler/cordova-plugin-inapppurchase.git</repo>
   <issue>https://github.com/AlexDisler/cordova-plugin-inapppurchase/issues</issue>
@@ -60,7 +61,7 @@
     <source-file src="src/android/Purchase.java" target-dir="src/com/alexdisler/inapppurchases" />
     <source-file src="src/android/Security.java" target-dir="src/com/alexdisler/inapppurchases" />
     <source-file src="src/android/SkuDetails.java" target-dir="src/com/alexdisler/inapppurchases" />
-    <source-file src="src/android/billing/IInAppBillingService.aidl" target-dir="src/com/android/vending/billing" />
+    <source-file src="src/android/billing/IInAppBillingService.aidl" target-dir="app/src/main/aidl/com/android/vending/billing" />
   </platform>
 
 </plugin>
