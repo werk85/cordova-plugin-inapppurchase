@@ -52,8 +52,12 @@ inAppPurchase.buy = (productId) => {
     } else {
       nativeCall('buy', [productId]).then((res) => {
         resolve({
+          productId     : res.productId,
+          productType   : 'inapp',
+          state         : res.transactionState,
           transactionId : res.transactionId,
           receipt       : res.receipt,
+          date          : Date.parse(res.date),
         });
       }).catch(reject);
     }
@@ -66,7 +70,7 @@ inAppPurchase.buy = (productId) => {
  * See README for more details.
  */
 inAppPurchase.subscribe = (productId) => {
-  return inAppPurchase.buy(productId);
+  return inAppPurchase.buy(productId).then((transaction) => Object.assign({}, transaction, { productType: 'subs' }));
 };
 
 /**
@@ -95,7 +99,7 @@ inAppPurchase.restorePurchases = () => {
       arr = res.transactions.map((val) => {
         return {
           productId     : val.productId,
-          date          : val.date,
+          date          : Date.parse(val.date),
           transactionId : val.transactionId,
           state         : val.transactionState,
         };

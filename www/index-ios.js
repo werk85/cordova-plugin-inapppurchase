@@ -99,8 +99,12 @@ inAppPurchase.buy = function (productId) {
     } else {
       nativeCall('buy', [productId]).then(function (res) {
         resolve({
+          productId: res.productId,
+          productType: 'inapp',
+          state: res.transactionState,
           transactionId: res.transactionId,
-          receipt: res.receipt
+          receipt: res.receipt,
+          date: Date.parse(res.date)
         });
       }).catch(reject);
     }
@@ -113,7 +117,9 @@ inAppPurchase.buy = function (productId) {
  * See README for more details.
  */
 inAppPurchase.subscribe = function (productId) {
-  return inAppPurchase.buy(productId);
+  return inAppPurchase.buy(productId).then(function (transaction) {
+    return Object.assign({}, transaction, { productType: 'subs' });
+  });
 };
 
 /**
@@ -142,7 +148,7 @@ inAppPurchase.restorePurchases = function () {
       arr = res.transactions.map(function (val) {
         return {
           productId: val.productId,
-          date: val.date,
+          date: Date.parse(val.date),
           transactionId: val.transactionId,
           state: val.transactionState
         };

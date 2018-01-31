@@ -73,7 +73,6 @@ const executePaymentOfType = (type, productId, developerPayload) => {
           signature: res.signature,
           state: res.purchaseState,
           transactionId: res.purchaseToken,
-          type : res.type,
         });
       }).catch(reject);
     }
@@ -119,7 +118,6 @@ inAppPurchase.restorePurchases = () => {
             signature: val.signature,
             state : val.purchaseState,
             transactionId: val.purchaseToken,
-            type : val.type,
           };
         });
       }

@@ -160,8 +160,7 @@ var executePaymentOfType = function executePaymentOfType(type, productId, develo
           receipt: res.receipt,
           signature: res.signature,
           state: res.purchaseState,
-          transactionId: res.purchaseToken,
-          type: res.type
+          transactionId: res.purchaseToken
         });
       }).catch(reject);
     }
@@ -204,8 +203,7 @@ inAppPurchase.restorePurchases = function () {
           receipt: val.receipt,
           signature: val.signature,
           state: val.purchaseState,
-          transactionId: val.purchaseToken,
-          type: val.type
+          transactionId: val.purchaseToken
         };
       });
     }

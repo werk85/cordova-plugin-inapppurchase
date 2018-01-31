@@ -389,7 +389,7 @@ describe('Android purchases', () => {
         assert(res[0].productId === productId);
         assert(res[0].state === state);
         assert(res[0].date === date);
-        assert(res[0].type === type);
+        assert(res[0].productType === type);
         done();
       } catch (err) {
         done(err);

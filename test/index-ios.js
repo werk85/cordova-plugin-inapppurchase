@@ -224,7 +224,7 @@ describe('iOS purchases', () => {
       const transactionId = '111111111';
       const productId = '111111111';
       const transactionState = 'REFUNDED';
-      const date = new Date();
+      const date = '2018-01-31T11:21:32Z';
       try {
         GLOBAL.window.cordova.exec = (success) => {
           success({ transactions : [{ transactionId, productId, transactionState, date }]});
@@ -233,7 +233,7 @@ describe('iOS purchases', () => {
         assert(res[0].transactionId === transactionId);
         assert(res[0].productId === productId);
         assert(res[0].state === transactionState);
-        assert(res[0].date === date);
+        assert(res[0].date === Date.parse(date));
         done();
       } catch (err) {
         done(err);

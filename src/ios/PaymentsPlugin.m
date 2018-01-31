@@ -38,7 +38,7 @@
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:product.priceLocale];
         NSString *currencyCode = [numberFormatter currencyCode];
-        
+
         [validProducts addObject:@{
                                  @"productId": NILABLE(product.productIdentifier),
                                  @"title": NILABLE(product.localizedTitle),
@@ -75,9 +75,17 @@
     NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptURL];
     NSString *encReceipt = [receiptData base64EncodedStringWithOptions:0];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+    NSString *transactionDateString = [formatter stringFromDate:transaction.transactionDate];
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{
                                                                                                                    @"transactionId": NILABLE(transaction.transactionIdentifier),
-                                                                                                                   @"receipt": NILABLE(encReceipt)
+                                                                                                                   @"transactionState": NILABLE([NSNumber numberWithInteger:transaction.transactionState]),
+                                                                                                                   @"receipt": NILABLE(encReceipt),
+                                                                                                                   @"date": NILABLE(transactionDateString),
+                                                                                                                   @"productId": NILABLE(transaction.payment.productIdentifier)
                                                                                                                    }];
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
